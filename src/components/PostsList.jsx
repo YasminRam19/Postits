@@ -9,38 +9,35 @@ const posts = [
   { author: "Gabs", body: "React JS Certification" },
 ];
 const PostList = ({ isPosting, onStopPosting }) => {
-  const [enteredBody, setEnteredBody] = useState("");
-  const [enteredAuthor, setEneteredAuthor] = useState("");
+  const [posts, setPosts] = useState([]);
 
-  const changeBodyHandler = (event) => {
-    setEnteredBody(event.target.value);
-  };
-
-  const authorChangeHandler = (event) => {
-    setEneteredAuthor(event.target.value);
+  const addPostHandler = (postData) => {
+    setPosts((existingPosts) => [postData, ...existingPosts]);
   };
 
   return (
     <>
       {isPosting && (
         <Modal onClose={onStopPosting}>
-          <NewPost
-            onBodyChange={changeBodyHandler}
-            onAuthorChange={authorChangeHandler}
-          />
+          <NewPost onCancel={onStopPosting} onAddPost={addPostHandler} />
         </Modal>
       )}
 
-      <ul className={classes.posts}>
-        <li>
-          <Post author={enteredAuthor} body={enteredBody} />
-        </li>
-        {posts.map((post) => (
-          <li>
-            <Post author={post.author} body={post.body} />
-          </li>
-        ))}
-      </ul>
+      {posts.length > 0 && (
+        <ul className={classes.posts}>
+          {posts.map((post) => (
+            <li key={post.body}>
+              <Post author={post.author} body={post.body} />
+            </li>
+          ))}
+        </ul>
+      )}
+      {posts.length === 0 && (
+        <div style={{ textAlign: "center", color: "white" }}>
+          <h2>There are no posts yet.</h2>
+          <p>Start adding some!</p>
+        </div>
+      )}
     </>
   );
 };
