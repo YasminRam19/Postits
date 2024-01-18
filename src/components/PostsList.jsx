@@ -8,7 +8,7 @@ const posts = [
   { author: "Yasmin", body: "UI Certification" },
   { author: "Gabs", body: "React JS Certification" },
 ];
-const PostList = () => {
+const PostList = ({ isPosting, onStopPosting }) => {
   const [enteredBody, setEnteredBody] = useState("");
   const [enteredAuthor, setEneteredAuthor] = useState("");
 
@@ -22,12 +22,14 @@ const PostList = () => {
 
   return (
     <>
-      <Modal>
-        <NewPost
-          onBodyChange={changeBodyHandler}
-          onAuthorChange={authorChangeHandler}
-        />
-      </Modal>
+      {isPosting && (
+        <Modal onClose={onStopPosting}>
+          <NewPost
+            onBodyChange={changeBodyHandler}
+            onAuthorChange={authorChangeHandler}
+          />
+        </Modal>
+      )}
 
       <ul className={classes.posts}>
         <li>
